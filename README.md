@@ -10,15 +10,12 @@ https://odp-cctegis.opendata.arcgis.com/datasets/cctegis::service-requests-2023-
 1. The ArcGIS explore link allows the user to view the API resources,  from here two links which allows one to find the endpoint details
  ***Service Layer URL:**`https://services6.arcgis.com/nyYfO9SxHU2ChQd9/arcgis/rest/services/Service_Requests_2023_until_20_May_2026/FeatureServer/0`
  ***REST Query Endpoint:**`https://services6.arcgis.com/nyYfO9SxHU2ChQd9/arcgis/rest/services/Service_Requests_2023_until_20_May_2026/FeatureServer/0/query`
-
-
-
-
-
+ ***Organisation ID = nyYfO9SxHU2ChQd9
+ ***Service Name = Service_Requests_2023_until_20_May_2026
 
 ### Fields:
 * Request: Inspect the dataset's schema (field names and types) and record what you find.
-Browing through **`https://services6.arcgis.com/nyYfO9SxHU2ChQd9/arcgis/rest/services/Service_Requests_2023_until_20_May_2026/FeatureServer/0` allows to view the 14 field defination of which
+Browing through **`https://services6.arcgis.com/nyYfO9SxHU2ChQd9/arcgis/rest/services/Service_Requests_2023_until_20_May_2026/FeatureServer/0` allows to view the 14 field definations of which
 a subset is listed below:
 1. Sub_Council (type: esriFieldTypeString, alias: Sub Council, SQL Type: sqlTypeNVarchar, length: 4000, nullable: true, editable: true)
 2. Ward (type: esriFieldTypeString, alias: Ward, SQL Type: sqlTypeNVarchar, length: 256, nullable: true, editable: true)
@@ -47,7 +44,7 @@ pip install -r requirements.txt
 2. **Run: For the test version that will pull just 1000 rows from ArcGIS Hub REST API querry (just getting the csv)
 python fetch.py
 
-3. ** Output: this will output test_date_extract_1000.csv located in /date/test/ foolder of the project.
+3. ** Output: this will output test_date_extract_1000.csv located in data/test/ folder of the project.
 
 
 ## Main Assessment
@@ -60,5 +57,13 @@ python fetch_no_power_requests.py
 
 python fetch_no_power_requests.py --from-cache
 
-6. ** The fin
+6. ** All the outfiles of interest will be located: cached json file will be here data/raw
+ and csv file will be here 
+  processed_csv = data/no_power_service_requests.csv.
+  summary_csv = data/no_power_service_requests_sub_summary.csv for suburb summary
+
+7. Within the code have also computed the number of filtered records to compare to the records being returned by processing the raw data
+
+8. The summary file is for grouped data has 
+
 

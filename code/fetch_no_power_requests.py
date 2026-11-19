@@ -37,15 +37,35 @@ api_url = (
 where_clause = "C3_Complaint_Type = 'No Power'"
 batch_size = 1000
 
+# Set the path to where all the extracted and computed data will be stored
 raw_dir = Path("../data/raw")
 processed_csv = Path("../data/no_power_service_requests.csv")
 summary_csv = Path("../data/no_power_service_requests_sub_summary.csv")
 
 
+# Set parameters for summarising data by grouping by suburb and counting
+
+suburb_grp_params = {
+    "where": where_clause,
+    "groupByFieldsForStatistics": "Suburb",
+    "outStatistics": '[{"statisticType": "count", "onStatisticField": "Suburb", "outStatisticFieldName": "Power_Outage_Count"}]',
+    "orderByFields": "Power_Outage_Count DESC",
+    "f": "json"
+}
+
+# Set parameters for summarising data direct count of records returned
+
+api_count_params = {
+    "where": where_clause,
+    "returnCountOnly": "true",
+    "f": "json"
+}
+
+
+# Set the variables that will be used when request to the API drops limiting to 5 tries
 def create_retrying_session(
     retries: int = 5, backoff_factor: float = 1.0
 ) -> requests.Session:
-    """Create a requests Session configured with exponential backoff retries."""
     session = requests.Session()
     retry_strategy = Retry(
         total=retries,
@@ -197,7 +217,39 @@ def export_to_csv(records: list[dict], output_path: Path) -> None:
         writer.writeheader()
         writer.writerows(records)
 
+    filter_count = requests.get(api_url, params=api_count_params).json()
+
+    if filter_count.get("count") == len(records):
+        logger.info("Exported rows and api filters count are the same %d", len(records))
+    else:
+        logger.info("Exported rows %d and api filters count %d are not the same", len(records), filter_count.get("count"))
+    
+
     logger.info("Exported %d rows to %s", len(records), output_path)
+
+
+    """Check if lenght of records is the same as the direct API filted return"""
+
+def export_summary_to_csv(output_path: Path) -> None:
+    """Write summary statistics grouped by suburb to a CSV file."""
+
+    sum_response = requests.get(api_url, params=suburb_grp_params).json()
+
+    sum_rows = [f["attributes"] for f in sum_response.get("features", [])]
+
+    if not sum_rows:
+        logger.warning("No summary records found; skipping CSV creation.")
+        return
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    sum_fieldnames = list(sum_rows[0].keys())
+
+    with output_path.open("w", newline="", encoding="utf-8") as sumcsvf:
+        writer = csv.DictWriter(sumcsvf, fieldnames=sum_fieldnames)
+        writer.writeheader()
+        writer.writerows(sum_rows)
+
+    logger.info("Exported %d summary rows to %s", len(sum_rows), output_path)
 
 
 def parse_args() -> argparse.Namespace:
@@ -228,6 +280,7 @@ def main() -> None:
                 session.close()
 
         export_to_csv(records, processed_csv)
+        export_summary_to_csv(summary_csv)
         logger.info("Pipeline finished successfully.")
     except Exception as exc:
         logger.critical("Pipeline failed: %s", exc)
