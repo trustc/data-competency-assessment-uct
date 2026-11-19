@@ -5,7 +5,7 @@ import requests
 QUERY_URL = (
     "https://services6.arcgis.com/nyYfO9SxHU2ChQd9/arcgis/rest/services/Service_Requests_2023_until_20_May_2026/FeatureServer/0/query"
 )
-OUTPUT_CSV = Path("data/test/sample_no_power_1000.csv")
+OUTPUT_CSV = Path("../data/test/sample_no_power_1000.csv")
 
 #"where": "C3_Complaint_Type = 'No Power'",
 params = {
