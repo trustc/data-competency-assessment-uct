@@ -9,15 +9,15 @@ https://odp-cctegis.opendata.arcgis.com/datasets/cctegis::service-requests-2023-
 * Requested: Work out the API endpoint behind the dataset page above. ArcGIS Hub datasets are backed by a feature service that exposes a REST query interface. Document in your README how you found it.
 1. The ArcGIS explore link allows the user to view the API resources,  from here two links which allows one to find the endpoint details
  
- ***Service Layer URL:
+ * **Service Layer URL**:
  `https://services6.arcgis.com/nyYfO9SxHU2ChQd9/arcgis/rest/services/Service_Requests_2023_until_20_May_2026/FeatureServer/0`
 
- ***REST Query Endpoint:
+ * **REST Query Endpoint**:
  `https://services6.arcgis.com/nyYfO9SxHU2ChQd9/arcgis/rest/services/Service_Requests_2023_until_20_May_2026/FeatureServer/0/query`
 
- ***Organisation ID = nyYfO9SxHU2ChQd9
+ * **Organisation ID** = nyYfO9SxHU2ChQd9
 
- ***Service Name = Service_Requests_2023_until_20_May_2026
+ * **Service Name** = Service_Requests_2023_until_20_May_2026
 
 ### Fields:
 * Requested: Inspect the dataset's schema (field names and types) and record what you find.
@@ -44,7 +44,7 @@ The fields list allows identification of the dataset variable name with the resp
 1. **Install required packages**: We would need to install dependencies that are already included in the requirements file.
 * To do this we use pip assuming python is already running/installed in the computer. If not please install python and pip
 
-Change directory to be here **data-competency-assessment-uct/**  then run these commands:
+Change directory to **data-competency-assessment-uct/**  then run these commands:
 
 python -m pip install --upgrade pip
 pip install -r requirements.txt
@@ -55,7 +55,7 @@ cd code/
 
 python fetch.py
 
-3. ** Output: this will output test_date_extract_1000.csv located in data/test/ folder of the project.
+3. **Output**: this will output test_date_extract_1000.csv located in data/test/ folder of the project.
 
 
 ## Main Assessment
